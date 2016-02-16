@@ -7,6 +7,9 @@ This is the file that contains the main function, not much to it other than that
 Client based on whatever file lies in the path "/root/CCMultiServer/Client/src/client/ccBetaClient.java", and 
 that it Starts a socket on a new CCMultiServerThread Thread.
 
+You may notice a good bit of code commented out on line 23. This code was an attempt at creating an update capability 
+that would allow for the Client to be in any area at any time, and as long as it was named CCBetaClient, the
+
 */
 
 import java.net.*;
