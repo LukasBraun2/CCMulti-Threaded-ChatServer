@@ -1,4 +1,13 @@
 package server;
+/*
+
+Main function file DOCUMENTATION
+
+This is the file that contains the main function, not much to it other than that it forces an update of the 
+Client based on whatever file lies in the path "/root/CCMultiServer/Client/src/client/ccBetaClient.java", and 
+that it Starts a socket on a new CCMultiServerThread Thread.
+
+*/
 
 import java.net.*;
 import java.nio.file.Files;
