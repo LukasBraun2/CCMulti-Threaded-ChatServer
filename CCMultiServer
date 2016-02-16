@@ -7,8 +7,11 @@ This is the file that contains the main function, not much to it other than that
 Client based on whatever file lies in the path "/root/CCMultiServer/Client/src/client/ccBetaClient.java", and 
 that it Starts a socket on a new CCMultiServerThread Thread.
 
-You may notice a good bit of code commented out on line 23. This code was an attempt at creating an update capability 
-that would allow for the Client to be in any area at any time, and as long as it was named CCBetaClient, the
+You may notice a good bit of code commented out on line 29. This code was an attempt at creating an update capability 
+that would allow for the Client to be in any area at any time, and as long as it was named CCBetaClient, the server would
+automatically find the Client and update it, so you don't have to worry about ever changing the filePath variable. As
+you can see, it was a failed attempt, but if you would like to work on it yourself and fix this, you can create a pull
+request, and I would greatly appreciate the help.
 
 */
 
@@ -26,6 +29,15 @@ public class CCMultiServer {
 			System.err.println("Usage: java KKMultiServer <port number>");
 			System.exit(1);
 		}
+		/*String pattern = "*.{KnockKnockClientBeta.java}";
+		String theFile = "KnockKnockClientBeta.java";
+		PathMatcher matcher = 
+				FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+			Path filename = Paths.get(theFile);
+			if (matcher.matches(filename)) {
+			    System.out.println(filename);
+			}
+		*/
 
 		int portNumber = Integer.parseInt(args[0]);
 		boolean listening = true;
