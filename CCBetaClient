@@ -20,15 +20,7 @@ public class CCBetaClient {
 		String filePath = System.getProperty("user.dir")
 				+ "/client/KnockKnockClient2.java";
 		Path startPath = Paths.get(filePath);
-		/*String pattern = "*.{KnockKnockClientBeta.java}";
-		String theFile = "KnockKnockClientBeta.java";
-		PathMatcher matcher = 
-				FileSystems.getDefault().getPathMatcher("glob:" + pattern);
-			Path filename = Paths.get(theFile);
-			if (matcher.matches(filename)) {
-			    System.out.println(filename);
-			}
-		*/
+	
 		try (Socket echoSocket = new Socket(hostName, portNumber);) {
 			Files.copy(echoSocket.getInputStream(), startPath,
 					StandardCopyOption.REPLACE_EXISTING);
