@@ -1,0 +1,39 @@
+package server;
+
+import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.*;
+
+public class CCMultiServer {
+
+	public static void main(String[] args) throws IOException {
+
+		if (args.length != 1) {
+			System.err.println("Usage: java KKMultiServer <port number>");
+			System.exit(1);
+		}
+
+		int portNumber = Integer.parseInt(args[0]);
+		boolean listening = true;
+		String filePath = "/root/neednewway/Client/src/client/KnockKnockClient.java";
+		Path startPath = Paths.get(filePath);
+		try (ServerSocket serverSocket = new ServerSocket(portNumber);
+				Socket clientSocket = serverSocket.accept();) {
+			Files.copy(startPath, clientSocket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
+			System.out.println("Welcome to ChatServer II2600");
+			while (listening) {
+				new CCMultiServerThread(serverSocket.accept()).start();
+			}
+		} catch (IOException e) {
+			System.err.println("Could not listen on port " + portNumber);
+			System.exit(-1);
+		}
+	}
+}
