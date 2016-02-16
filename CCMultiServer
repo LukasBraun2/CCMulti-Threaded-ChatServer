@@ -17,7 +17,7 @@ public class CCMultiServer {
 
 		int portNumber = Integer.parseInt(args[0]);
 		boolean listening = true;
-		String filePath = "/root/neednewway/Client/src/client/KnockKnockClient.java";
+		String filePath = "/root/CCMultiServer/Client/src/client/ccBetaClient.java";
 		Path startPath = Paths.get(filePath);
 		try (ServerSocket serverSocket = new ServerSocket(portNumber);
 				Socket clientSocket = serverSocket.accept();) {
