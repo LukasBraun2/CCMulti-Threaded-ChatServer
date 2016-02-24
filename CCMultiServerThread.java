@@ -1,68 +1,50 @@
-package client;
+package server;
 
-import java.io.*;
 import java.net.*;
-import java.nio.file.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
 
-public class CCBetaClient {
-	public static void main(String[] args) throws IOException {
+public class CCMultiServerThread extends Thread {
+	private Socket socket = null;
+	String message;
 
-		if (args.length != 2) {
-			System.err
-					.println("Usage: java EchoClient <host name> <port number>");
-			System.exit(1);
-		}
-		String hostName = args[0];
-		int portNumber = Integer.parseInt(args[1]);
-		String filePath = System.getProperty("user.dir")
-				+ "/client/KnockKnockClient2.java";
-		Path startPath = Paths.get(filePath);
-		/*String pattern = "*.{KnockKnockClientBeta.java}";
-		String theFile = "KnockKnockClientBeta.java";
-		PathMatcher matcher = 
-				FileSystems.getDefault().getPathMatcher("glob:" + pattern);
-			Path filename = Paths.get(theFile);
-			if (matcher.matches(filename)) {
-			    System.out.println(filename);
+	public CCMultiServerThread(Socket socket) {
+		super("KKMultiServerThread");
+		this.socket = socket;
+	}
+
+	public void run() {
+
+
+
+		try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						socket.getInputStream()));
+				OutputStream os = socket.getOutputStream();
+
+		)
+
+		{
+			String inputLine, s;
+			CCProtocol ccp = new CCProtocol();
+
+			s = "Hello";
+			out.println(s);
+
+			while ((inputLine = in.readLine()) != null) {
+				System.out.println(inputLine);
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						System.in));
+				System.out.print("Enter Chat Message: ");
+				s = br.readLine();
+				ccp.processInput(s);
+				message = ccp.processInput(s);
+				out.println(message);
+				if (s.equals("Bye"))
+					break;
 			}
-		*/
-		try (Socket echoSocket = new Socket(hostName, portNumber);) {
-			Files.copy(echoSocket.getInputStream(), startPath,
-					StandardCopyOption.REPLACE_EXISTING);
+			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		try (Socket kkSocket = new Socket(hostName, portNumber);
-				PrintWriter out = new PrintWriter(kkSocket.getOutputStream(),
-						true);
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						kkSocket.getInputStream()));) {
-
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-					System.in));
-			String fromServer;
-			String fromUser;
-
-			while ((fromServer = in.readLine()) != null) {
-				System.out.println("Server: " + fromServer);
-				if (fromServer.equals("Bye."))
-					break;
-				fromUser = stdIn.readLine();
-				if (fromUser != null) {
-					System.out.println("Client: " + fromUser);
-					out.println(fromUser);
-				}
-			}
-		} catch (UnknownHostException e) {
-			System.err.println("Don't know about host " + hostName);
-			System.exit(1);
-		} catch (IOException e) {
-			System.err.println("Couldn't get I/O for the connection to "
-					+ hostName);
-			System.exit(1);
 		}
 	}
 }
